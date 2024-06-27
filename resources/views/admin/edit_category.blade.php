@@ -27,38 +27,19 @@
       <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
-            
+            <h1 style="align-items: center">Update Category</h1>
             <div class="div_deg">
-                <form action="{{url('add_category')}}" method="post">
+                
+                <form action="{{url('update_category',$data->id)}}" method="post">
                   @csrf
 
                     <div>
-                        <input type="text" name = "category">
-                        <input class="btn btn-info" type="submit" value="Add Category">
+                        <input type="text" name = "category" value="{{$data->category_name}}">
+                        <input class="btn btn-success" type="submit" value="Update Category">
                     </div>
                 </form>
             </div>
-            <div>
-              <table class="table">
-                <thead class="table-dark">
-                  <tr>
-                    <th>Category</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($data as $data)
-                  <tr>
-                    <td>{{$data->category_name}}</td>
-                    <td><a href="{{url('edit_category',$data->id)}}" class="btn btn-success"   role="button">Edit</a></td>
-                    <td><a href="{{url('delete_category',$data->id)}}" class="btn btn-danger"  role="button">Delete</a></td>
-                  </tr>
-                  @endforeach
-                  
-                </tbody>
-              </table>
-            </div>
+            
 
 
           </div>

@@ -9,7 +9,9 @@ class AdminController extends Controller
 {
     public function view_category()
     {
-        return view('admin.category');        
+        $data = Category::all();
+
+        return view('admin.category',compact('data'));        
     }
     public function add_category(Request $request)
     {
@@ -20,4 +22,23 @@ class AdminController extends Controller
         return redirect()->back();
 
     }
+    public function edit_category($id){
+        $data = Category::find($id);
+        return view('admin.edit_category',compact('data'));
+
+    }
+    public function update_category(Request $request, $id){
+        $data = Category::find($id);
+        $data->category_name = $request->category;
+        $data->save();
+        toastr()->updated('Category');
+        return redirect('view_category');
+    }
+    public function delete_category($id){
+        $data = Category::find($id);
+        $data->delete();
+        toastr()->warning('Category Successfully deleted');
+        return redirect()->back();
+    }
+
 }
