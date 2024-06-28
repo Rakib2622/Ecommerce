@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 
 class AdminController extends Controller
 {
@@ -37,8 +38,94 @@ class AdminController extends Controller
     public function delete_category($id){
         $data = Category::find($id);
         $data->delete();
-        toastr()->warning('Category Successfully deleted');
+        toastr()->deleted('Category');
         return redirect()->back();
     }
+
+
+    public function view_product()
+    {
+        $product = Product::all();
+
+        return view('admin.product',compact('product'));        
+    }
+
+    public function show_add_product(){
+        $category = Category::all();
+        return view('admin.add_product', compact('category'));
+    }
+
+    public function add_product(Request $request){
+        $product = new Product;
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->category = $request->category;
+        $image = $request->image;
+        if($image){
+            $imagename = time().'.'.$image->getClientOriginalExtension();
+            $request->image->move('products', $imagename);
+            $product->image = $imagename;
+        }
+
+        $product->save();
+        toastr()->addSuccess('Product');
+        return redirect()->back();
+    }
+
+
+    public function edit_product($id){
+        $category = Category::all();
+        $product = Product::find($id);
+        return view('admin.edit_product',compact('product','category'));
+
+    }
+    public function update_product(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->category = $request->category;
+        
+        // Handle the image upload
+        if ($request->hasFile('image')) {
+            // Delete the old image if exists
+            if ($product->image && file_exists(public_path('products/' . $product->image))) {
+                unlink(public_path('products/' . $product->image));
+            }
+    
+            $image = $request->file('image');
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('products'), $imagename);
+            $product->image = $imagename;
+        }
+    
+        $product->save();
+    
+        toastr()->success('Product updated successfully');
+        return redirect('view_product');
+    }
+    
+    public function delete_product($id){
+        $product = Product::find($id);
+        $image_path = public_path('products/'.$product->image);
+        if(file_exists($image_path)){
+            unlink($image_path);
+        }
+        $product->delete();
+        toastr()->deleted('Product');
+        return redirect()->back();
+    }
+    public function search_product(Request $request)
+{
+    $search = $request->input('search'); // Make sure the input name matches the form input
+    $product = Product::where('title', 'LIKE', '%' . $search . '%')
+                       ->orWhere('description', 'LIKE', '%' . $search . '%')
+                       ->orWhere('category', 'LIKE', '%' . $search . '%')
+                       ->get();
+
+    return view('admin.product', compact('product'));
+}
 
 }
