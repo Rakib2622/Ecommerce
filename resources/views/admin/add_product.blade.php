@@ -50,16 +50,14 @@
                     <input type="file" name="image" class="form-control-file" id="productImage" required>
                 </div>
                 <div class="form-group">
-                    <label for="productCategory">Category</label>
-                    <select class="form-control" name="category" id="productCategory" required>
-                        <option value="">Select a category</option>
-                        @foreach ($category as $category)
-                        <option value="{{$category->category_name}}">{{$category->category_name}}</option>
-                        @endforeach
-                        
-                        <!-- Add more categories as needed -->
-                    </select>
-                </div>
+                  <label for="productCategory">Category</label>
+                  <select class="form-control" name="category_id" id="productCategory" required>
+                      <option value="">Select a category</option>
+                      @foreach ($category as $category)
+                          <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                      @endforeach
+                  </select>
+              </div>
                 <button type="submit" class="btn btn-primary">Add Product</button>
                 </form>
             </div>

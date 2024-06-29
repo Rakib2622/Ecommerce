@@ -45,29 +45,25 @@
                 </div>
             </form>
             
-              <div class="row">
-                  <!-- Example product card -->
-                  @foreach ($product as $products )
-
+            <div class="row">
+              <!-- Example product card -->
+              @foreach ($product as $products)
                   <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="products/{{$products->image}}" class="card-img-top" alt="Product Image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{$products->title}}</h5>
-                            <p class="card-text">{{$products->Description}}</p>
-                            <p class="card-text"><strong>Price: </strong>{{$products->price}}</p>
-                            <p class="card-text"><strong>Category: </strong>{{$products->category}}</p>
-                            <a href="{{url('edit_product',$products->id)}}" class="btn btn-info">Edit</a>
-                            <a href="{{url('delete_product',$products->id)}}" class="btn btn-danger">Delete</a>
-                        </div>
-                    </div>
-                </div>
-                    
-                  @endforeach
-                  
-                  <!-- Add more product cards as needed -->
-              </div>
+                      <div class="card mb-4">
+                          <img src="{{ asset('products/' . $products->image) }}" class="card-img-top" alt="Product Image">
+                          <div class="card-body">
+                              <h5 class="card-title">{{ $products->title }}</h5>
+                              <p class="card-text">{{ $products->description }}</p>
+                              <p class="card-text"><strong>Price: </strong>{{ $products->price }}</p>
+                              <p class="card-text"><strong>Category: </strong>{{ $products->category->category_name }}</p>
+                              <a href="{{ url('edit_product', $products->id) }}" class="btn btn-info">Edit</a>
+                              <a href="{{ url('delete_product', $products->id) }}" class="btn btn-danger">Delete</a>
+                          </div>
+                      </div>
+                  </div>
+              @endforeach
           </div>
+          
             
             
 

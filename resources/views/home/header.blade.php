@@ -12,7 +12,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav  ">
           <li class="nav-item active">
-            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{{ url('dashboard') }}">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="shop.html">
@@ -33,19 +33,38 @@
             <a class="nav-link" href="contact.html">Contact Us</a>
           </li>
         </ul>
+
+        
+
         <div class="user_option">
-          <a href="{{url('/login')}}">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            <span>
-              Login
-            </span>
-          </a>
-          <a href="{{url('/register')}}">
-            <i class="fa fa-vcard" aria-hidden="true"></i>
-            <span>
-              Register
-            </span>
-          </a>
+
+          @if (Route::has('login'))
+          @auth
+              <div class="dropdown">
+                  <button class="btn mr-4" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{ Auth::user()->name }}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="userDropdown">
+                      <a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a>
+                      <!-- Authentication -->
+                      <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                          @csrf
+                          <button type="submit" class="dropdown-item">Logout</button>
+                      </form>
+                  </div>
+              </div>
+          @else
+              <a href="{{ url('/login') }}">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  <span>Login</span>
+              </a>
+              <a href="{{ url('/register') }}">
+                  <i class="fa fa-vcard" aria-hidden="true"></i>
+                  <span>Register</span>
+              </a>
+          @endauth
+      @endif
+      
 
           <a href="">
             <i class="fa fa-shopping-bag" aria-hidden="true"></i>

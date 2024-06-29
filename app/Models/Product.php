@@ -12,7 +12,12 @@ class Product extends Model
         'description',
         'image',
         'price',
-        'category', 
-
+        'category_id',  // Ensure this field is present in your database
     ];
+
+    // Relationship to Category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

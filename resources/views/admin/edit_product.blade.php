@@ -52,14 +52,16 @@
                         <input type="file" name="image"  class="form-control-file" id="image">
                     </div>
                     <div class="form-group">
-                        <label for="productCategory">Category</label>
-                    <select class="form-control" name="category" id="productCategory" required>
-                        <option value="{{$product->category}}">{{$product->category}}</option>
-                        @foreach ($category as $category)
-                        <option value="{{$category->category_name}}">{{$category->category_name}}</option>
-                        @endforeach
-                        </select>
-                    </div>
+                      <label for="productCategory">Category</label>
+                      <select class="form-control" name="category_id" id="productCategory" required>
+                          @foreach ($category as $category)
+                              <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                  {{ $category->category_name }}
+                              </option>
+                          @endforeach
+                      </select>
+                  </div>
+                  
                     <button type="submit" class="btn btn-success">Update Product</button>
                     </form>
                 </div>

@@ -56,20 +56,35 @@ class AdminController extends Controller
     }
 
     public function add_product(Request $request){
+        // Validate the request
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+    
+        // Create a new product instance
         $product = new Product;
         $product->title = $request->title;
         $product->description = $request->description;
         $product->price = $request->price;
-        $product->category = $request->category;
-        $image = $request->image;
+        $product->category_id = $request->category_id; // Use category_id instead of category
+    
+        // Handle the image upload
+        $image = $request->file('image');
         if($image){
             $imagename = time().'.'.$image->getClientOriginalExtension();
             $request->image->move('products', $imagename);
             $product->image = $imagename;
         }
-
+    
+        // Save the product to the database
         $product->save();
-        toastr()->addSuccess('Product');
+    
+        // Flash success message and redirect back
+        toastr()->addSuccess('Product added successfully!');
         return redirect()->back();
     }
 
@@ -86,7 +101,8 @@ class AdminController extends Controller
         $product->title = $request->title;
         $product->description = $request->description;
         $product->price = $request->price;
-        $product->category = $request->category;
+        $product->category_id = $request->category_id;
+        
         
         // Handle the image upload
         if ($request->hasFile('image')) {

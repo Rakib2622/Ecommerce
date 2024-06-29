@@ -3,13 +3,14 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 route::get('/', [HomeController::class,'home']);
+route::get('/dashboard', [HomeController::class,'home'])->
+    middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -18,6 +19,14 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/product_detail/{id}', [ProductController::class, 'show'])->name('product_detail');
+Route::get('/all_products', [ProductController::class, 'allProducts'])->name('all_products');
+
+Route::get('/buy_now/{id}', [ProductController::class, 'buyNow'])->name('buy_now');
+Route::get('/add_to_cart/{id}', [ProductController::class, 'addToCart'])->name('add_to_cart');
+
 
 
 route::get('admin/dashboard', [HomeController::class,'index'])->
